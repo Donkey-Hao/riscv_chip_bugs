@@ -1,0 +1,491 @@
+{
+    "01":{
+        "chip": "boom",
+        "CVE": "CVE-2021-1234",
+        "description": "Bug related to misaligned lr instruction",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/504",
+        "instr": [
+            "nop",
+            "la x17, d0",
+            "addi x17, x17, 12",
+            "amoand.w x18, x13, (x17)",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "la x29, d0",
+            "addi x29, x29, 12",
+            "lr.d x31, (x29)",
+            "la x11, d0",
+            "addi x11, x11, -0",
+            "sc.w x11, x12, (x11)",
+            "nop",
+            "nop",
+            "nop"
+          ],
+        "keyinst":  [
+            "amoand.w",
+            "lr.d",
+            "sc.w"
+          ],
+        "data": [
+            "d0:    .dword 0xab139bda206c623e, 0xf1baedb8cf6c78f9",
+                ".dword 0xd1204c12c4ae1cb9, 0x094f4c2d2a285754",
+                ".dword 0x2b45917e0b99c60f, 0x6c6d74e24d8691d9",
+                ".dword 0xca265d692cdd9eef, 0x0e1485725764019f"
+          ],
+        "keydata": [
+            "d0"
+          ],
+        "march": "rv64g",
+        "mabi": "lp64"
+    },
+
+    "02":{
+        "chip": "boom",
+        "CVE": "NA",
+        "description": "Invalid rm in floating point instructions",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/458",
+        "instr": [
+            "test:",
+            "divu x1, x6, x28",
+            "addi x21, x31, -708",
+            "remu x19, x18, x28",
+            "nop",
+            "nop",
+            "remu x21, x11, x14",
+            "addi x19, x21, -1676",
+            "addi x2, zero, 0x12",
+            "beq x7, x2, pass",
+            "la x1, test",
+            "addi x1, x1, 2",
+            "jalr x0, (x1)",
+            "pass:",
+            "nop",
+            "ecall"
+        ],
+        "keyinst": [
+            "divu",
+            "remu"
+        ],
+        "keydata": [
+        ],
+        "data": [
+            
+        ],
+        "march": "rv64g",
+        "mabi": "lp64"
+    },
+    "03":{
+        "chip": "boom",
+        "CVE": "NA",
+        "description": "Executing Single-Precision Floating-Point with an invalid rm field does not throw the exception",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/675",
+        "instr": [
+            "li t0, 0x40490FDB",
+            "fmv.w.x ft0, t0",
+            "fnmsub.s ft0, ft0, ft0, ft0"
+        ],
+        "keyinst": [
+            "fmv.w.x",
+            "fnmsub.s"
+        ],
+        "data": [
+            
+        ],
+        "keydata": [
+            "t0"
+        ],
+        "march": "rv64imaf",
+        "mabi": "lp64"
+    },
+    "04":{
+        "chip": "boom",
+        "CVE": "NA",
+        "description": "Executing Double-Precision Floating-Point with an invalid rm field does not throw the exception",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/454",
+        "instr": [
+            "fcvt.d.w fs0, zero",
+            "fcvt.d.w ft6, zero",
+            "addi x1, x0, 0x400",
+            "slli x1, x1, 4",
+            "csrc mstatus, x1",
+            "fle.d x23, fs0, ft6",
+            "csrrc x2, mstatus, x1"
+        ],
+        "keyinst": [
+            "fcvt.d.w",
+            "fle.d"
+        ],
+        "data": [
+            
+        ],
+        "keydata": [
+            "mstatus"
+        ],
+        "march": "rv64imafd",
+        "mabi": "lp64d"
+    },
+    "05":{
+        "chip": "boom",
+        "CVE": "NA",
+        "description": "fp instruction exception when rm field is set dyn",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/492",
+        "instr": [
+            "l0:    addw x20, x26, x31",
+            "l1:    slti x12, x14, -0",
+            "l2:    sraiw x1, x31, 25",
+            "l3:    fcvt.s.l f18, x12, rtz",
+            "l4:    fnmadd.s f20, f25, f0, f8, rtz",
+            "l5:    fcvt.w.s x24, f2, rne",
+            "l6:    la x14, d3",
+            "       addi x14, x14, 16",
+            "       amoswap.d x13, x31, (x14)",
+            "l7:    fcvt.s.l f28, x29, rne",
+            "l8:    la x22, d5",
+            "       addi x22, x22, 0",
+            "       amoswap.d x31, x25, (x22)",
+            "l9:    fsqrt.s f0, f30, rup",
+            "l10:   xori x1, x5, -1025",
+            "l11:   la x28, d2",
+            "       sw x8, 12(x28)",
+            "l12:   csrrsi x24, frm, 31",
+            "l13:   la x22, d5",
+            "       addi x22, x22, -4",
+            "       lr.w x15, (x22)",
+            "l14:   bne x21, x26, l16",
+            "l15:   fcvt.s.wu f2, x24, dyn",
+            "l16:   la x21, d5",
+            "       addi x21, x21, 8",
+            "       amoand.d x23, x26, (x21)",
+            "l17:   ecall"
+        ],
+        "keyinst": [
+            "fcvt.s.l",
+            "fnmadd.s",
+            "fcvt.w.s",
+            "fcvt.s.wu",
+            "fsqrt.s"
+        ],
+        "data": [
+            "d2     .dword 0x73759bb3ddbc1741, 0x298c65203dd8b8d1",
+                    ".dword 0x943f35afe5019696, 0x158fd32ec8221ac2",
+                    ".dword 0x30974a2f5a21c0dd, 0x925670a653482482",
+            "d0:    .dword 0xab139bda206c623e, 0xf1baedb8cf6c78f9",
+                    ".dword 0xe432151efa670cb7, 0x39864621240bdd35",
+                    ".dword 0x582f08118f83909a, 0x9d95a59a10f2c3b6",
+                    ".dword 0x1b96359a1c9ac3a2, 0x104bade1313ba956",
+            "d5:     .dword 0xdbbe1765c9b5b7e5, 0x970cbb72d11fe576",
+                    ".dword 0x9fefc4808fb4e657, 0x0da707742b589eeb",
+                    ".dword 0xbda3dd9d82a406f1, 0xc0c753d9f696e152",
+                    ".dword 0x304968111b527913, 0x892acd2e254bed23"
+        ],
+        "keydata": [
+            "d2",
+            "d0",
+            "d5"
+        ],
+        "march": "rv64imafdc",
+        "mabi": "lp64d"
+    },
+    "06":{
+        "chip": "boom",
+        "CVE": "NA",
+        "description": "Different result of fsqrt.s Boom vs Spike (Rocket)",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/493",
+        "instr": [
+            "nop",
+            "nop",
+            "la x10, d3",
+            "flw f21, -8(x10)",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "la x3, d4",
+            "addi x3, x3, -16",
+            "amoxor.d x29, x7, (x3)",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "fcvt.s.lu f25, x3, rne",
+            "fdiv.s f0, f21, f25, rup",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "nop",
+            "la x4, d3",
+            "flw f13, -28(x4)",
+            "nop",
+            "nop",
+            "nop",
+            "fsqrt.s f11, f13, rdn",
+            "nop",
+            "nop"           
+        ],
+        "keyinst": [
+            "fsqrt.s",
+            "fdiv.s",
+            "fcvt.s.lu"
+        ],
+        "data": [
+            "d3:    .dword 0xab139bda206c623e, 0xf1baedb8cf6c78f9",
+                    ".dword 0xb7f746aed3202c66, 0xfbaa9164de0ccfec",
+                    ".dword 0x33ac99dad4a0e23e, 0xd239be7d7bb3c755",
+                    ".dword 0x091bbcbdfcff1964, 0x28e253ab732df29a",
+            "d4:    .dword 0x6fcfee278d3b6338, 0x62cf87cf47c0d209",
+                    ".dword 0xb2fefeb071856bf7, 0xdf3ab4dfdb58537b",
+                    ".dword 0x9b63f534f83552dc, 0x055c0e392ab67c0a",
+                    ".dword 0x1c376bee7fda3553, 0x3d5f41072dcbd9e6"    
+        ],
+        "keydata": [
+            "d3",
+            "d4"
+        ],
+        "march": "rv64imafd",
+        "mabi": "lp64d"
+    },
+
+    "07":{
+        "chip": "rocket",
+        "CVE": "NA",
+        "description": "Unused standard parts of mie register not properly implementing read-only 0",
+        "reference": "https://github.com/chipsalliance/rocket-chip/issues/3610",
+        "instr": [
+            "csrr t0, mie",
+            "li t1, 0xffffffff",
+            "csrw mie, t1",
+            "csrr t2, mie"
+        ],
+        "keyinst": [
+            "csrrw"
+        ],
+        "data": [
+            
+        ],
+        "keydata": [
+            "mie"
+        ],
+        "march": "rv64g",
+        "mabi": "lp64"
+    },
+
+    "08":{
+        "chip": "boom",
+        "CVE": "NA",
+        "description": "Floating point rounding mode is not working correctly",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/564",
+        "instr": [
+            "fld ft3, ft3_val",
+            "fsqrt.d fa3, ft3",
+            "fdiv.d fa4, ft3, ft3"
+        ],
+        "keyinst": [
+            "fsqrt.d",
+            "fdiv.d"
+        ],
+        "data": [
+            "ft3_val: .dword 0x41e2e80040000000"
+        ],
+        "keydata": [
+            "ft3_val"
+        ],
+        "march": "rv64imafd",
+        "mabi": "lp64d"
+    },
+    "09":{
+        "chip": "boom",
+        "CVE": "NA",
+        "description": "Static rounding mode into account in FDivSqrtUnit",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/628",
+        "instr": [
+            "fld ft3, ft3_val",
+            "fsqrt.d fa3, ft3",
+            "fdiv.d fa4, ft3, ft3"
+        ],
+        "keyinst": [
+            "fsqrt.d",
+            "fdiv.d"
+        ],
+        "data": [
+            "ft3_val: .dword 0x41e2e80040000000"
+        ],
+        "keydata": [
+            "ft3_val"
+        ],
+        "march": "rv64imafd",
+        "mabi": "lp64d"
+    },
+    "10":{
+        "chip": "boom",
+        "CVE": "NA",
+        "description": "minstret counts with an offset",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/637",
+        "instr": [
+            "li a0, 0x60000010",
+            "csrrw zero, minstret, zero",
+            "csrrw t0, minstret, zero",
+            "sw t0, (a0)",
+            "sw zero, (zero)"
+        ],
+        "keyinst": [
+            "csrrw"
+        ],
+        "data": [
+            
+        ],
+        "keydata": [
+            "minstret"
+        ],
+        "march": "rv64g",
+        "mabi": "lp64"
+    },
+    "11":{
+        "chip": "TODO",
+        "CVE": "",
+        "description": "",
+        "reference": "TODO",
+        "instr": [
+            "fld fa6, fa6_val",
+            "fld ft2, ft2_val",
+            "fcvt.s.d fa6, fa6",
+            "fcvt.s.d ft2, ft2",
+            "fdiv.s ft3, fa6, ft2",
+            "csrr t0, fflags",
+            "andi t1, t0, 0x1",
+            "bnez t1, fail",
+            "fail:  ecall"
+        ],
+        "keyinst": [
+            "fdiv.s"
+        ],
+        "data": [
+            "fflags",
+            "fa6_val: .dword 0x97f2f43fd08f1d24",
+            "ft2_val: .dword 0xffffffff7fb4f314"
+        ],
+        "keydata":[
+            "fflags"
+        ],
+        "march": "rv64imafd",
+        "mabi": "lp64d"
+    },
+    "12":{
+        "chip": "boom",
+        "CVE": "NA",
+        "description": "fflags underflow bit arised incorrectly",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/559",
+        "instr": [
+            "fld fa0, val1",
+            "fld fa1, val2",
+            "fld fa2, val3",
+            "li t0, 0b011",
+            "csrw frm, t0",
+            "fmsub.d fa3, fa0, fa1, fa2"
+        ],
+        "keyinst": [
+            "fmsub.d"
+        ],
+        "data": [
+            "val1   .dword 0x0010000000000000",
+            "val2   .dword 0x0010000000000000",
+            "val3   .dword 0x800fffffffffffff"
+        ],
+        "keydata":[
+            "frm",
+            "val1",
+            "val2",
+            "val3"
+        ],
+        "march": "rv64imafd",
+        "mabi": "lp64d"
+    },
+    "13":{
+        "chip": "boom",
+        "CVE": "NA",
+        "description": "Missing exceptions when a compressed store instruction accesses an invalid memory address.",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/603",
+        "instr": [
+            "li a1, 0x0",
+            "li a2, 0x1000",
+            "c.sw a2, 64(a1)"
+        ],
+        "keyinst": [
+            "c.sw"
+        ],
+        "data": [
+
+        ],
+        "keydata":[
+            "a1",
+            "0x0"
+        ],
+        "march": "rv64gc",
+        "mabi": "lp64"
+    },
+    "14":{
+        "chip": "boom",
+        "CVE": "NA",
+        "description": "FS is not set to dirty when mstatus is written",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/567",
+        "instr": [
+            "li t0, 0x0",
+            "csrrc t1, mstatus, x0",
+            "li t2, 0xa00000000",
+            "slli t2, t2, 32",
+            "csrrw t1, mstatus, t2",
+            "lui s5, 0xa00",
+            "addiw s5, s5, 67",
+            "slli s5, s5, 12",
+            "addi s5, s5, -2048",
+            "csrw mstatus, s5"
+        ],
+        "keyinst": [
+            "csrrw"
+        ],
+        "data": [
+            
+        ],
+        "keydata":[
+            "mstatus"
+        ],
+        "march": "",
+        "mabi": ""
+    },
+    "15":{
+        "chip": "boom",
+        "CVE": "NA",
+        "description": "Instruction access fault exception instead of instruction page fault exception",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/581",
+        "instr": [
+            "nop"
+        ],
+        "keyinst": [
+            
+        ],
+        "data": [
+            
+        ],
+        "keydata":[
+            
+        ],
+        "march": "rv64g",
+        "mabi": "lp64d"
+    }
+
+}
