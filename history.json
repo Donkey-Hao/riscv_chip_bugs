@@ -52,7 +52,6 @@
         "march": "rv64g",
         "mabi": "lp64"
     },
-
     "02":{
         "chip": "boom",
         "CVE": "NA",
@@ -81,6 +80,7 @@
             "remu"
         ],
         "keydata": [
+ 
         ],
         "data": [
             
@@ -260,7 +260,6 @@
         "march": "rv64imafd",
         "mabi": "lp64d"
     },
-
     "07":{
         "chip": "rocket",
         "CVE": "NA",
@@ -284,7 +283,6 @@
         "march": "rv64g",
         "mabi": "lp64"
     },
-
     "08":{
         "chip": "boom",
         "CVE": "NA",
@@ -486,6 +484,110 @@
         ],
         "march": "rv64g",
         "mabi": "lp64d"
+    },
+    "16":{
+        "chip": "boom",
+        "CVE": "",
+        "description": "Dromajo/BOOM cosim sNAN bug with SQRT.s",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/550",
+        "instr": [
+            "csrr a5, fflags",
+            "csrwi fflags, 0",
+            "fld fa5, snan64, a4",
+            "fsqrt.d fa6, fa5",
+            "csrr a0, fflags",
+            "csrwi fflags, 0",
+            "flw fa5, snan32, a4",
+            "fsqrt.s fa6, fa5",
+            "csrr a0, fflags",
+            "ret"
+        ],
+        "keyinst": [
+            "fsqrt.s"
+        ],
+        "data": [
+            "snan32: .word 0x7F800001",
+            "snan64: .dword 0x7FF0000000000001"
+        ],
+        "keydata":[
+            "snan32",
+            "snan64"
+        ],
+        "march": "rv64g",
+        "mabi": "lp64"
+    },
+    "17":{
+        "chip": "boom",
+        "CVE": "",
+        "description": "loop predictor bug for loops with small body ",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/541",
+        "instr": [
+            "li t1, 40",
+            "1: li t0, 100",
+            "2: addw t1, t1, -1",
+            "bneq t1, 2b",
+            "li t1, 40",
+            "addw t0, t0, -1",
+            "bneq t0, 2b",
+            "j 1b"
+        ],
+        "keyinst": [
+            
+        ],
+        "data": [
+            
+        ],
+        "keydata":[
+            
+        ],
+        "march": "rv64g",
+        "mabi": "lp64"
+    },
+    "18":{
+        "chip": "boom",
+        "CVE": "",
+        "description": "fcsr 'invalid operation' flag is not set",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/503",
+        "instr": [
+            "fdiv.s f27, f29, f4"
+        ],
+        "keyinst": [
+            
+        ],
+        "data": [
+            
+        ],
+        "keydata":[
+            
+        ],
+        "march": "rv64f",
+        "mabi": "lp64"
+    },
+    "19":{
+        "chip": "boom",
+        "CVE": "",
+        "description": "fdiv.d returns wrong value",
+        "reference": "https://github.com/riscv-boom/riscv-boom/issues/46",
+        "instr": [
+            "fld ft0, in0",
+            "fld ft1, in1",
+            "fdiv.d ft2, ft0, ft1",
+            "fsd ft2, result",
+            "li a7, 10",
+            "ecall"
+        ],
+        "keyinst": [
+           "fdiv.d"
+        ],
+        "data": [
+            "in0: .double 0x72d370b4cc99e4cb",
+            "in1: .double 0x7ff8000000000000",
+            "result: .double 0x0"
+        ],
+        "keydata":[
+            
+        ],
+        "march": "rv64f",
+        "mabi": "lp64"
     }
-
 }
