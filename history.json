@@ -180,7 +180,7 @@
             "fsqrt.s"
         ],
         "data": [
-            "d2     .dword 0x73759bb3ddbc1741, 0x298c65203dd8b8d1",
+            "d2:    .dword 0x73759bb3ddbc1741, 0x298c65203dd8b8d1",
                     ".dword 0x943f35afe5019696, 0x158fd32ec8221ac2",
                     ".dword 0x30974a2f5a21c0dd, 0x925670a653482482",
             "d0:    .dword 0xab139bda206c623e, 0xf1baedb8cf6c78f9",
@@ -400,9 +400,9 @@
             "fmsub.d"
         ],
         "data": [
-            "val1   .dword 0x0010000000000000",
-            "val2   .dword 0x0010000000000000",
-            "val3   .dword 0x800fffffffffffff"
+            "val1:   .dword 0x0010000000000000",
+            "val2:   .dword 0x0010000000000000",
+            "val3:   .dword 0x800fffffffffffff"
         ],
         "keydata":[
             "frm",
